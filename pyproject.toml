@@ -1,0 +1,15 @@
+[project]
+name = "cfu"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "asyncpg>=0.31.0",
+    "fastapi[standard]>=0.139.2",
+    "tortoise-orm>=1.1.7",
+]
+
+
+[tool.tortoise]
+tortoise_orm = "boot.tortoise.TORTOISE_ORM"
