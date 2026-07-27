@@ -42,10 +42,9 @@ class Migration(migrations.Migration):
                 ('email', fields.CharField(null=True, max_length=255)),
                 ('created_at', fields.DatetimeField(auto_now=False, auto_now_add=True)),
                 ('updated_at', fields.DatetimeField(auto_now=True, auto_now_add=False)),
-                ('events', fields.ManyToManyField('models.Event', unique=True, db_constraint=True, through='event_participants', forward_key='event_id', backward_key='participant_id', related_name='participants', on_delete=OnDelete.CASCADE)),
                 ('user', fields.OneToOneField('models.User', source_field='user_id', null=True, db_constraint=True, to_field='id', related_name='participant', on_delete=OnDelete.SET_NULL)),
             ],
-            options={'table': 'participants', 'app': 'models', 'pk_attr': 'id', 'table_description': 'One row per phone_number (unique, the natural key). Every column'},
+            options={'table': 'participants', 'app': 'models', 'pk_attr': 'id'},
             bases=['Model'],
         ),
         ops.CreateModel(
