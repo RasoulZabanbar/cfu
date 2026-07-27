@@ -24,6 +24,26 @@ router = APIRouter(prefix="/stats", tags=["stats"])
 UNKNOWN_LABEL = "نامشخص"  # shown for empty/null province or university
 
 
+
+# dispatchers/academics/degrees_fields.py
+from fastapi import APIRouter, Request
+from fastapi.templating import Jinja2Templates
+
+
+router = APIRouter()
+
+templates = Jinja2Templates(directory="templates")
+
+@router.get("/loader_stats")
+async def degree_field_management_webview(
+    request: Request
+):
+    
+    return templates.TemplateResponse(request, "states_participents.html")
+
+
+
+
 async def _ranked_counts(field: str, event_name: str) -> list[dict]:
     """
     Group participants of one event by `field` (province or university),

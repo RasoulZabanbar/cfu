@@ -3,6 +3,11 @@ from services.bale_interactions import BaleClient
 from services.phone import normalize_phone
 bale_client = BaleClient()
 
+from boot.config import get_env_setup
+
+
+_config_env = get_env_setup()
+
 
 def phone_keyboard():
     return {
@@ -21,6 +26,8 @@ def my_certificates_keyboard():
     }
 
 
+admin_keyboard = {"keyboard": [ [{"text": "تحلیل رویداد ها", "web_app": {"url": f"https:cfu.mirzahesab.ir/stats/loader_stats"}}] ], "resize_keyboard": True,
+}
 
 
 
@@ -44,6 +51,13 @@ async def message_proccesor(message):
                 "برای یافتن گواهینامه های شما  لطفاً با دکمه زیر شماره تماس خود را با ما به اشتراک بگذارید."
             ),
             reply_markup=phone_keyboard(),
+        )
+        await bale_client.send_message(
+            chat_id=chat_id,
+            text=(
+                "ادمین محترم میتونین از طریق دکمه های زیر تحلیل  رویداد هاتون رو هم داشته باشین"
+            ),
+            reply_markup=admin_keyboard,
         )
         return
 
