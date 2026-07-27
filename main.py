@@ -22,7 +22,7 @@ app = FastAPI(lifespan=lifespan)
 
 app.include_router(router)
 
-@app.post("/router")
+@app.post("/webhook")
 async def webhook(request: Request):
     update = await request.json()
     print("Received update:", update)
