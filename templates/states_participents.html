@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سامانه تحلیل شرکت‌کنندگان — دانشگاه فرهنگیان استان قزوین</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink-navy: #10233d;
+    --ink-navy-soft: #1b3352;
+    --paper: #efe7d3;
+    --paper-soft: #f6f1e4;
+    --gold: #c9a227;
+    --gold-soft: #e2c05f;
+    --teal: #2e6f6e;
+    --teal-soft: #4a8f8e;
+    --text-muted: #6b7280;
+    --track: #ddd4bd;
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--ink-navy);
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(201,162,39,0.10), transparent 40%),
+      radial-gradient(circle at 90% 85%, rgba(46,111,110,0.18), transparent 45%);
+    font-family: 'Vazirmatn', sans-serif;
+    color: var(--paper);
+  }
+
+  .num { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+
+  /* ---------- Header ---------- */
+  header {
+    padding: 48px 24px 32px;
+    text-align: center;
+    position: relative;
+  }
+
+  .seal {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, var(--gold-soft), var(--gold) 60%, #8a6c14 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(201,162,39,0.35), inset 0 0 0 3px rgba(255,255,255,0.25);
+  }
+  .seal svg { width: 30px; height: 30px; fill: #10233d; }
+
+  header h1 {
+    margin: 0;
+    font-size: clamp(22px, 3.4vw, 32px);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  header p {
+    margin: 10px 0 0;
+    color: var(--gold-soft);
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  /* ---------- Control bar ---------- */
+  .control-bar {
+    max-width: 980px;
+    margin: 0 auto 36px;
+    padding: 20px 24px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(201,162,39,0.25);
+    border-radius: var(--radius);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    backdrop-filter: blur(6px);
+  }
+
+  .control-bar label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gold-soft);
+    white-space: nowrap;
+  }
+
+  select {
+    flex: 1;
+    min-width: 220px;
+    padding: 12px 16px;
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink-navy);
+    background: var(--paper);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%2310233d' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left 16px center;
+  }
+  select:focus-visible, button:focus-visible {
+    outline: 3px solid var(--teal-soft);
+    outline-offset: 2px;
+  }
+
+  .total-pill {
+    font-size: 13px;
+    color: var(--paper);
+    background: rgba(46,111,110,0.35);
+    border: 1px solid rgba(74,143,142,0.5);
+    padding: 8px 16px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .total-pill .num { color: var(--gold-soft); font-size: 15px; }
+
+  /* ---------- Content ---------- */
+  main {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 24px 64px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 760px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--paper);
+    border-radius: var(--radius);
+    padding: 26px 24px 22px;
+    color: var(--ink-navy);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+  }
+
+  .card h2 {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 800;
+  }
+  .card .card-sub {
+    margin: 0 0 22px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+
+  .bar-row {
+    display: grid;
+    grid-template-columns: 30px 1fr 40px;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .bar-row:last-child { margin-bottom: 0; }
+
+  .rank-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--ink-navy-soft);
+    color: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .rank-badge.gold {
+    background: radial-gradient(circle at 35% 30%, var(--gold-soft), var(--gold) 65%, #8a6c14 100%);
+    color: var(--ink-navy);
+    box-shadow: 0 3px 8px rgba(201,162,39,0.5);
+  }
+
+  .bar-body { min-width: 0; }
+  .bar-label {
+    font-size: 13.5px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .bar-track {
+    height: 10px;
+    background: var(--track);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    width: 0;
+    transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .fill-university { background: linear-gradient(90deg, var(--teal), var(--teal-soft)); }
+  .fill-province   { background: linear-gradient(90deg, var(--gold), var(--gold-soft)); }
+
+  .bar-count {
+    font-size: 13px;
+    text-align: left;
+    color: var(--ink-navy);
+    opacity: 0.75;
+  }
+
+  /* ---------- States ---------- */
+  .state-box {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 24px;
+    color: var(--paper);
+  }
+  .state-box .icon { font-size: 40px; margin-bottom: 14px; opacity: 0.6; }
+  .state-box p { margin: 0; font-size: 14.5px; color: rgba(239,231,211,0.75); }
+  .state-box button {
+    margin-top: 18px;
+    padding: 10px 22px;
+    font-family: 'Vazirmatn', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ink-navy);
+    background: var(--gold-soft);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .state-box button:hover { background: var(--gold); }
+
+  .skeleton .bar-fill { background: rgba(107,114,128,0.25) !important; animation: pulse 1.3s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+  footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: rgba(239,231,211,0.45);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar-fill { transition: none; }
+    .skeleton .bar-fill { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="seal">
+    <svg viewBox="0 0 24 24"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.4l-4.8 2.5.9-5.4L4.2 7.7l5.4-.8L12 2z"/></svg>
+  </div>
+  <h1>دانشگاه فرهنگیان استان قزوین</h1>
+  <p>سامانه تحلیل شرکت‌کنندگان گواهی</p>
+</header>
+
+<div class="control-bar">
+  <label for="event-select">رویداد:</label>
+  <select id="event-select">
+    <option value="">در حال بارگذاری فهرست رویدادها...</option>
+  </select>
+  <span id="total-pill" class="total-pill" style="display:none;"></span>
+</div>
+
+<main>
+  <div class="grid" id="content-grid">
+    <div class="state-box">
+      <div class="icon">📜</div>
+      <p>برای مشاهده تحلیل، یک رویداد را از فهرست بالا انتخاب کنید.</p>
+    </div>
+  </div>
+</main>
+
+<footer>داده‌ها به‌صورت زنده از سامانه ثبت گواهی دریافت می‌شود.</footer>
+
+<script>
+  // Point this at your API. Change if the dashboard is hosted
+  // somewhere other than alongside the API itself.
+  const API_BASE = "https://cfu.mirzahesab.ir";
+
+  const selectEl = document.getElementById("event-select");
+  const gridEl = document.getElementById("content-grid");
+  const totalPill = document.getElementById("total-pill");
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function renderState(iconEmoji, message, showRetry) {
+    gridEl.innerHTML = `
+      <div class="state-box">
+        <div class="icon">${iconEmoji}</div>
+        <p>${message}</p>
+        ${showRetry ? '<button onclick="loadSummary()">تلاش دوباره</button>' : ""}
+      </div>`;
+  }
+
+  function renderSkeleton() {
+    const skeletonRows = Array.from({ length: 5 }, (_, i) => `
+      <div class="bar-row">
+        <div class="rank-badge">${i + 1}</div>
+        <div class="bar-body">
+          <div class="bar-label">&nbsp;</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${90 - i * 12}%"></div></div>
+        </div>
+        <div class="bar-count"></div>
+      </div>`).join("");
+
+    gridEl.innerHTML = `
+      <div class="card skeleton"><h2>دانشگاه‌های برتر</h2><p class="card-sub">در حال دریافت اطلاعات...</p>${skeletonRows}</div>
+      <div class="card skeleton"><h2>استان‌های برتر</h2><p class="card-sub">در حال دریافت اطلاعات...</p>${skeletonRows}</div>`;
+  }
+
+  function buildCard(title, subtitle, rows, fillClass) {
+    if (!rows.length) {
+      return `
+        <div class="card">
+          <h2>${title}</h2>
+          <p class="card-sub">${subtitle}</p>
+          <p style="font-size:13.5px; color:var(--text-muted); margin:20px 0 4px;">هنوز داده‌ای برای این رویداد ثبت نشده است.</p>
+        </div>`;
+    }
+
+    const maxCount = Math.max(...rows.map(r => r.count));
+    const barRows = rows.map((r, i) => `
+      <div class="bar-row">
+        <div class="rank-badge ${i === 0 ? "gold" : ""}">${i + 1}</div>
+        <div class="bar-body">
+          <div class="bar-label" title="${escapeHtml(r.label)}">${escapeHtml(r.label)}</div>
+          <div class="bar-track"><div class="bar-fill ${fillClass}" data-target="${(r.count / maxCount) * 100}"></div></div>
+        </div>
+        <div class="bar-count num">${r.count}</div>
+      </div>`).join("");
+
+    return `<div class="card"><h2>${title}</h2><p class="card-sub">${subtitle}</p>${barRows}</div>`;
+  }
+
+  function animateBars() {
+    requestAnimationFrame(() => {
+      document.querySelectorAll(".bar-fill[data-target]").forEach(el => {
+        el.style.width = el.dataset.target + "%";
+      });
+    });
+  }
+
+  async function loadEvents() {
+    try {
+      const res = await fetch(`${API_BASE}/stats/events`);
+      if (!res.ok) throw new Error("bad status " + res.status);
+      const events = await res.json();
+
+      if (!events.length) {
+        selectEl.innerHTML = `<option value="">هیچ رویدادی ثبت نشده است</option>`;
+        return;
+      }
+
+      selectEl.innerHTML =
+        `<option value="">یک رویداد انتخاب کنید...</option>` +
+        events.map(e => `<option value="${escapeHtml(e.name)}">${escapeHtml(e.name)}</option>`).join("");
+    } catch (err) {
+      selectEl.innerHTML = `<option value="">خطا در دریافت فهرست رویدادها</option>`;
+      console.error(err);
+    }
+  }
+
+  async function loadSummary() {
+    const eventName = selectEl.value;
+    if (!eventName) return;
+
+    renderSkeleton();
+    totalPill.style.display = "none";
+
+    try {
+      const res = await fetch(`${API_BASE}/stats/summary?event_name=${encodeURIComponent(eventName)}&top_n=5`);
+      if (!res.ok) throw new Error("bad status " + res.status);
+      const data = await res.json();
+
+      totalPill.style.display = "inline-block";
+      totalPill.innerHTML = `مجموع شرکت‌کنندگان: <span class="num">${data.total_participants}</span>`;
+
+      gridEl.innerHTML =
+        buildCard("دانشگاه‌های برتر", "بر اساس تعداد شرکت‌کننده در این رویداد", data.top_university, "fill-university") +
+        buildCard("استان‌های برتر", "بر اساس تعداد شرکت‌کننده در این رویداد", data.top_province, "fill-province");
+
+      animateBars();
+    } catch (err) {
+      renderState("⚠️", "خطا در دریافت اطلاعات از سرور. اتصال یا آدرس سرور را بررسی کنید.", true);
+      console.error(err);
+    }
+  }
+
+  selectEl.addEventListener("change", loadSummary);
+  loadEvents();
+</script>
+
+</body>
+</html>

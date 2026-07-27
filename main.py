@@ -7,6 +7,12 @@ from boot.tortoise import TORTOISE_ORM
 from proccesors.messages import message_proccesor
 from proccesors.callbacks import handle_callback
 
+
+
+from stats import router as stats_router
+
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     async with RegisterTortoise(
@@ -21,6 +27,8 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(router)
+
+app.include_router(stats_router)
 
 @app.post("/webhook")
 async def webhook(request: Request):
