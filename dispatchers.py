@@ -10,7 +10,7 @@ from services.schemas import ParticipantUploadResponse
 from services.phone import normalize_phone
 
 
-_env_config = get_env_setup
+_env_config = get_env_setup()
 router = APIRouter(prefix="/participants", tags=["participants"])
 
 ALLOWED_CONTENT_TYPES = {"application/pdf"}
