@@ -1,6 +1,6 @@
 from models.user import User, Participant
 from services.bale_interactions import BaleClient
-
+from services.phone import normalize_phone
 bale_client = BaleClient()
 
 
@@ -21,14 +21,7 @@ def my_certificates_keyboard():
     }
 
 
-def normalize_phone(raw: str) -> str:
-    """Best-effort normalization to match however Participant.phone_number was stored."""
-    p = raw.strip().replace(" ", "").replace("-", "")
-    if p.startswith("+98"):
-        p = "0" + p[3:]
-    elif p.startswith("98") and len(p) > 10:
-        p = "0" + p[2:]
-    return p
+
 
 
 async def message_proccesor(message):

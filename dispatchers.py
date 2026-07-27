@@ -9,6 +9,8 @@ from models.user import Event, EventParticipant, Participant
 from services.schemas import ParticipantUploadResponse
 from services.phone import normalize_phone
 
+
+_env_config = get_env_setup
 router = APIRouter(prefix="/participants", tags=["participants"])
 
 ALLOWED_CONTENT_TYPES = {"application/pdf"}
@@ -68,7 +70,7 @@ async def upload_participant(
 
     # Store the PDF on disk under a per-event folder; filename is
     # unique regardless of what the client named it.
-    event_dir = os.path.join(get_env_setup.storage_dir, str(event.id))
+    event_dir = os.path.join(_env_config.storage_dir, str(event.id))
     os.makedirs(event_dir, exist_ok=True)
     stored_path = os.path.join(event_dir, f"{participant.id}_{uuid.uuid4().hex[:8]}.pdf")
 

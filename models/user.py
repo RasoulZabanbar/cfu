@@ -39,32 +39,18 @@ class Event(Model):
 
 
 class Participant(Model):
-    """
-    One row per phone_number (unique, the natural key). Every column
-    depends only on the participant's id, never on which event they
-    attended -- that's what keeps this table in 3NF, since the
-    event-specific license file lives in EventParticipant instead.
-    """
-
     id = fields.IntField(pk=True)
     full_name = fields.CharField(max_length=255, null=True)
     national_id = fields.CharField(max_length=10, null=True)
-    province = fields.CharField(max_length=100, null=True)       # استان
-    university = fields.CharField(max_length=255, null=True)     # دانشگاه
-    position = fields.CharField(max_length=100, null=True)       # سمت
+    province = fields.CharField(max_length=100, null=True)
+    university = fields.CharField(max_length=255, null=True)
+    position = fields.CharField(max_length=100, null=True)
     phone_number = fields.CharField(max_length=20, unique=True, index=True)
-    email = fields.CharField(max_length=255, null=True)          # ایمیل
+    email = fields.CharField(max_length=255, null=True)
 
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
 
-    events: fields.ManyToManyRelation["Event"] = fields.ManyToManyField(
-        "models.Event",
-        related_name="participants",
-        through="event_participants",
-        forward_key="event_id",
-        backward_key="participant_id",
-    )
 
     user = fields.OneToOneField(
         "models.User",
@@ -73,13 +59,12 @@ class Participant(Model):
         on_delete=fields.SET_NULL,
     )
 
-
     class Meta:
         table = "participants"
 
-    def __str__(self):
-        return f"{self.full_name} ({self.phone_number})"
 
+
+        
 
 class EventParticipant(Model):
     """
