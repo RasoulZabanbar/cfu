@@ -6,9 +6,8 @@ from boot.tortoise import TORTOISE_ORM
 
 from proccesors.messages import message_proccesor
 from proccesors.callbacks import handle_callback
+
 @asynccontextmanager
-
-
 async def lifespan(app: FastAPI):
     async with RegisterTortoise(
         app,
