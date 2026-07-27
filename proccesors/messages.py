@@ -26,9 +26,12 @@ def my_certificates_keyboard():
     }
 
 
-admin_keyboard = {"keyboard": [ [{"text": "تحلیل رویداد ها", "web_app": {"url": f"https:cfu.mirzahesab.ir/stats/loader_stats"}}] ], "resize_keyboard": True,
+admin_keyboard = {
+    "keyboard": [
+        [{"text": "تحلیل رویداد ها", "web_app": {"url": "https://cfu.mirzahesab.ir/stats/loader_stats"}}]
+    ],
+    "resize_keyboard": True,
 }
-
 
 
 async def message_proccesor(message):
