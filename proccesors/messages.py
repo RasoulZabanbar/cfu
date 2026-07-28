@@ -11,23 +11,28 @@ _config_env = get_env_setup()
 
 
 
-def my_certificates_keyboard():
-    return {
-        "inline_keyboard": [
-            [{"text": "مشاهده گواهی های من", "callback_data": "show_certificates"}]
-        ]
-    }
+
 
 
 admin_keyboard = {
     "keyboard": [
-        [{"text": "📱 اشتراک شماره این حساب", "request_contact": True}]
-        [{"text": "تحلیل رویداد ها", "web_app": {"url": "https://cfu.mirzahesab.ir/stats/loader_stats"}}],
-
+        [
+            {
+                "text": "📱 اشتراک شماره این حساب",
+                "request_contact": True,
+            }
+        ],
+        [
+            {
+                "text": "تحلیل رویداد ها",
+                "web_app": {
+                    "url": "https://cfu.mirzahesab.ir/stats/loader_stats"
+                },
+            }
+        ],
     ],
     "resize_keyboard": True,
 }
-
 
 async def message_proccesor(message):
     bale_id = message["from"]["id"]
@@ -48,7 +53,7 @@ async def message_proccesor(message):
                 "به ربات خوش آمدید.\n\n"
                 "برای یافتن گواهینامه های شما  لطفاً با دکمه زیر شماره تماس خود را با ما به اشتراک بگذارید."
             ),
-            reply_markup=my_certificates_keyboard(),
+            reply_markup=admin_keyboard,
         )
 
         return
@@ -59,7 +64,7 @@ async def message_proccesor(message):
         await bale_client.send_message(
             chat_id=chat_id,
             text="لطفاً ابتدا شماره تماس خود را با استفاده از دکمه زیر ارسال کنید.",
-            reply_markup=phone_keyboard(),
+            reply_markup=admin_keyboard(),
         )
 
 
