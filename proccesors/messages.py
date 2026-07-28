@@ -9,7 +9,21 @@ from boot.config import get_env_setup
 _config_env = get_env_setup()
 
 
+def phone_keyboard():
+    return {
+        "keyboard": [
+            [{"text": "📱 اشتراک شماره این حساب", "request_contact": True}]
+        ],
+        "resize_keyboard": True,
+    }
 
+
+def my_certificates_keyboard():
+    return {
+        "inline_keyboard": [
+            [{"text": "مشاهده گواهی های من", "callback_data": "show_certificates"}]
+        ]
+    }
 
 
 
@@ -34,6 +48,16 @@ admin_keyboard = {
     "resize_keyboard": True,
 }
 
+
+
+admin_keyboard = {
+    "keyboard": [
+        [{"text": "تحلیل رویداد ها", "web_app": {"url": "https://cfu.mirzahesab.ir/stats/loader_stats"}}]
+    ],
+    "resize_keyboard": True,
+}
+
+
 async def message_proccesor(message):
     bale_id = message["from"]["id"]
     chat_id = message["chat"]["id"]
@@ -55,7 +79,13 @@ async def message_proccesor(message):
             ),
             reply_markup=admin_keyboard,
         )
-
+        await bale_client.send_message(
+            chat_id=chat_id,
+            text=(
+                "ادمین محترم میتونین از طریق دکمه های زیر تحلیل  رویداد هاتون رو هم داشته باشین"
+            ),
+            reply_markup=admin_keyboard,
+        )
         return
 
     # Fallback for any other text: re-prompt for phone if not linked yet
@@ -64,7 +94,7 @@ async def message_proccesor(message):
         await bale_client.send_message(
             chat_id=chat_id,
             text="لطفاً ابتدا شماره تماس خود را با استفاده از دکمه زیر ارسال کنید.",
-            reply_markup=admin_keyboard(),
+            reply_markup=phone_keyboard(),
         )
 
 
