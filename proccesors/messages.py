@@ -9,13 +9,6 @@ from boot.config import get_env_setup
 _config_env = get_env_setup()
 
 
-def phone_keyboard():
-    return {
-        "keyboard": [
-            [{"text": "📱 اشتراک شماره این حساب", "request_contact": True}]
-        ],
-        "resize_keyboard": True,
-    }
 
 
 def my_certificates_keyboard():
@@ -28,7 +21,9 @@ def my_certificates_keyboard():
 
 admin_keyboard = {
     "keyboard": [
-        [{"text": "تحلیل رویداد ها", "web_app": {"url": "https://cfu.mirzahesab.ir/stats/loader_stats"}}]
+        [{"text": "📱 اشتراک شماره این حساب", "request_contact": True}]
+        [{"text": "تحلیل رویداد ها", "web_app": {"url": "https://cfu.mirzahesab.ir/stats/loader_stats"}}],
+
     ],
     "resize_keyboard": True,
 }
@@ -53,15 +48,9 @@ async def message_proccesor(message):
                 "به ربات خوش آمدید.\n\n"
                 "برای یافتن گواهینامه های شما  لطفاً با دکمه زیر شماره تماس خود را با ما به اشتراک بگذارید."
             ),
-            reply_markup=phone_keyboard(),
+            reply_markup=my_certificates_keyboard(),
         )
-        await bale_client.send_message(
-            chat_id=chat_id,
-            text=(
-                "ادمین محترم میتونین از طریق دکمه های زیر تحلیل  رویداد هاتون رو هم داشته باشین"
-            ),
-            reply_markup=admin_keyboard,
-        )
+
         return
 
     # Fallback for any other text: re-prompt for phone if not linked yet
